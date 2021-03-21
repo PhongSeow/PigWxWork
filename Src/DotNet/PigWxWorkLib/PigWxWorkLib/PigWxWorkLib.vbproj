@@ -11,9 +11,9 @@
     <PackageProjectUrl>https://en.seowphong.com/oss/PigWxWork/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/PhongSeow/PigWxWork/tree/master/Src/DotNet/PigWxWorkLib</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
-    <PackageTags></PackageTags>
+    <PackageTags>PigWxWorkLib 企业微信 Work WeChat</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1.19</Version>
+    <Version>1.0.1.20</Version>
     <Description>这是一个接口简单，容易理解的企业微信开发工具应用，现在刚刚起步，后续还会不断迭代更多功能。</Description>
   </PropertyGroup>
 
