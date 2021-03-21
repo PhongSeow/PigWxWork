@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>PigWxWorkLib</RootNamespace>
+    <TargetFrameworks>net40;net45;</TargetFrameworks>
+    <Authors>Seow Phong</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Company>Seow Phong Studio</Company>
+    <Copyright>Copyright (c) 2021 Seow Phong</Copyright>
+    <PackageIcon>SeowPhongLogo.png</PackageIcon>
+    <PackageProjectUrl>https://en.seowphong.com/oss/PigWxWork/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/PhongSeow/PigWxWork/tree/master/Src/DotNet/PigWxWorkLib</RepositoryUrl>
+    <RepositoryType>GIT</RepositoryType>
+    <PackageTags></PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.1.19</Version>
+    <Description>这是一个接口简单，容易理解的企业微信开发工具应用，现在刚刚起步，后续还会不断迭代更多功能。</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="SeowPhongLogo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <PackageReference Include="PigToolsLib">
+      <Version>1.0.5</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PigToolsLib" Version="1.0.9" />
+    <PackageReference Include="WxWorkCryptLib" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+  </ItemGroup>
+
+</Project>
