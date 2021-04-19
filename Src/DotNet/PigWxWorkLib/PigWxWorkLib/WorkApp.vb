@@ -4,7 +4,7 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: 企业微信应用类
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.0.9
+'* Version: 1.0.10
 '* Create Time: 23/2/2021
 '* 1.0.2  25/2/2021   Add GetErrMsg, Modify mNew
 '* 1.0.3  1/3/2021   Add RefAccessToken,Oauth2
@@ -14,15 +14,17 @@
 '* 1.0.7  8/3/2021   Add AppPath,AppTitle
 '* 1.0.8  8/3/2021   Modify GetApiIpList
 '* 1.0.9  10/3/2021   Modify AccessToken
+'* 1.0.10  15/4/2021  Use PigToolsWinLib
 '**********************************
 
 Imports System.Web
 Imports System.Web.Services
 Imports PigToolsLib
+Imports PigToolsWinLib
 
 Public Class WorkApp
 	Inherits PigBaseMini
-	Private Const CLS_VERSION As String = "1.0.8"
+	Private Const CLS_VERSION As String = "1.0.10"
 	Private Const QYAPI_URL As String = "https://qyapi.weixin.qq.com"
 	Private Const QYAPI_CGIBIN_URL As String = QYAPI_URL & "/cgi-bin"
 	Private Const OEPN_WX_URL As String = "https://open.weixin.qq.com"
@@ -162,7 +164,7 @@ Public Class WorkApp
 					Else
 						strStepName = "New PigJSon"
 						If Me.IsDebug = True Then strStepName &= "(" & .ResString & ")"
-						Dim oPigJSon As New fPigJSon(.ResString)
+						Dim oPigJSon As New PigJSon(.ResString)
 						If oPigJSon.LastErr <> "" Then Throw New Exception(oPigJSon.LastErr)
 						strStepName = "检查 errcode"
 						Select Case oPigJSon.GetStrValue("errcode")
@@ -196,8 +198,8 @@ Public Class WorkApp
 	Public Function GetWorkMemberFromOauth2Redirect(HttpContext As HttpContext, Optional IsGetDetInf As Boolean = False) As WorkMember
 		Dim strStepName As String = ""
 		Try
-			strStepName = "New fPigHttpContext"
-			Dim oPigHttpContext As New fPigHttpContext(HttpContext)
+			strStepName = "New PigHttpContext"
+			Dim oPigHttpContext As New PigHttpContext(HttpContext)
 			Dim oWorkMember As New WorkMember
 			strStepName = "GetUserIdentity"
 			Me.GetUserIdentity(oPigHttpContext.RequestItem("code"), oWorkMember)
@@ -254,7 +256,7 @@ Public Class WorkApp
 					Throw New Exception(.LastErr)
 				Else
 					strStepName = "New PigJSon"
-					Dim oPigJSon As New fPigJSon(.ResString)
+					Dim oPigJSon As New PigJSon(.ResString)
 					If oPigJSon.LastErr <> "" Then Throw New Exception(oPigJSon.LastErr)
 					strStepName = "检查 errcode"
 					Select Case oPigJSon.GetStrValue("errcode")
@@ -297,7 +299,7 @@ Public Class WorkApp
 					Throw New Exception(.LastErr)
 				Else
 					strStepName = "New PigJSon"
-					Dim oPigJSon As New fPigJSon(.ResString)
+					Dim oPigJSon As New PigJSon(.ResString)
 					If oPigJSon.LastErr <> "" Then Throw New Exception(oPigJSon.LastErr)
 					strStepName = "检查 errcode"
 					Select Case oPigJSon.GetStrValue("errcode")
@@ -340,7 +342,7 @@ Public Class WorkApp
 					Throw New Exception(.LastErr)
 				Else
 					strStepName = "New PigJSon"
-					Dim oPigJSon As New fPigJSon(.ResString)
+					Dim oPigJSon As New PigJSon(.ResString)
 					If oPigJSon.LastErr <> "" Then Throw New Exception(oPigJSon.LastErr)
 					strStepName = "检查 errcode"
 					Select Case oPigJSon.GetStrValue("errcode")

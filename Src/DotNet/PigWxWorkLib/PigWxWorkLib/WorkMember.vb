@@ -4,13 +4,16 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: 企业微信成员
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.0.2
+'* Version: 1.0.3
 '* Create Time: 5/3/2021
 '* 1.0.2  6/3/2021   Add FillPropertiesByJSon
+'* 1.0.3  15/4/2021   Use PigToolsWinLib
 '**********************************
+Imports PigToolsWinLib
+
 Public Class WorkMember
 	Inherits PigBaseMini
-	Private Const CLS_VERSION As String = "1.0.2"
+	Private Const CLS_VERSION As String = "1.0.3"
 
 	Public Sub New()
 		MyBase.New(CLS_VERSION)
@@ -20,8 +23,8 @@ Public Class WorkMember
 		MyBase.New(CLS_VERSION)
 		Dim strStepName As String = ""
 		Try
-			strStepName = "New fPigJSon"
-			Dim oPigJSon As New fPigJSon(JSonStr)
+			strStepName = "New PigJSon"
+			Dim oPigJSon As New PigJSon(JSonStr)
 			If oPigJSon.LastErr <> "" Then Throw New Exception(oPigJSon.LastErr)
 			strStepName = "FillPropertiesByJSon"
 			Me.FillPropertiesByJSon(oPigJSon)
@@ -333,7 +336,7 @@ Public Class WorkMember
 		End Set
 	End Property
 
-	Friend Sub FillPropertiesByJSon(PigJSon As fPigJSon)
+	Friend Sub FillPropertiesByJSon(PigJSon As PigJSon)
 		Try
 			With Me
 				If .UserId.Length = 0 Then
