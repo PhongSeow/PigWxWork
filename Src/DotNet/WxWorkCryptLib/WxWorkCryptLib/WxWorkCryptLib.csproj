@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net40;net50;</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://work.weixin.qq.com/api/doc/90000/90138/90307</PackageProjectUrl>
+    <Company>WxWorkCryptLib</Company>
+    <Authors>WxWorkCryptLib</Authors>
+    <Copyright>WxWorkCryptLib</Copyright>
+    <Description>由于企业微信加解密库未提供VB.net的源码，为方便在VB.net中使用，使用企业微信提供的加解密库C#源码编译了这个类库的NuGet包。
+源码下载地址：https://open.work.weixin.qq.com/wwopen/downloadfile/csharp.zip 。</Description>
+    <RepositoryUrl></RepositoryUrl>
+    <RepositoryType></RepositoryType>
+  </PropertyGroup>
+
+</Project>

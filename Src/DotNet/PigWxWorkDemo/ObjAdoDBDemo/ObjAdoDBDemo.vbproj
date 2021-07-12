@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>ObjAdoDBDemo</RootNamespace>
+    <TargetFrameworks>net20;net30;net35;net40;net45;</TargetFrameworks>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <Authors>Seow Phong</Authors>
+	  <Company>Seow Phong Studio</Company>
+	  <Product>ObjAdoDB Demo Console</Product>
+	  <Description>Demo console program for ObjAdoDBLib</Description>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageProjectUrl>https://en.seowphong.com/oss/ObjAdoDB/</PackageProjectUrl>
+	  <RepositoryType>GIT</RepositoryType>
+	  <RepositoryUrl>https://github.com/PhongSeow/ObjAdoDB/tree/master/Src/DotNet/ObjAdoDBDemo</RepositoryUrl>
+	  <Version>1.0.2</Version>
+	  <PackageTags>ObjAdoDBLib Ado AdoDB VB6 ASP</PackageTags>
+	  <PackageReleaseNotes>Add demo code.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <PackageReference Include="ObjAdoDBLib">
+      <Version>1.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="ObjAdoDBLib">
+      <Version>1.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ObjAdoDBLib" Version="1.0.2" />
+  </ItemGroup>
+
+</Project>
