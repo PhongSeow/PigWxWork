@@ -13,9 +13,9 @@
     <RepositoryType>GIT</RepositoryType>
     <PackageTags>PigWxWorkLib 企业微信 Work WeChat</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.2.3</Version>
+    <Version>1.0.3.1</Version>
     <Description>这是一个接口简单，容易理解的企业微信开发工具应用，现在刚刚起步，后续还会不断迭代更多功能。</Description>
-    <PackageReleaseNotes>更新引用类库，代码瘦身。</PackageReleaseNotes>
+    <PackageReleaseNotes>修复 WorkApp bug</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="PigToolsLib" Version="1.0.10.1" />
+    <PackageReference Include="PigToolsLib" Version="1.0.11.3" />
     <PackageReference Include="PigToolsWinLib" Version="1.0.1.6" />
     <PackageReference Include="WxWorkCryptLib" Version="1.0.0" />
   </ItemGroup>

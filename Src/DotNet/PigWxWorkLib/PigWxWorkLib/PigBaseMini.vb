@@ -4,7 +4,7 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: Basic lightweight Edition
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.0.20
+'* Version: 1.0.23
 '* Create Time: 31/8/2019
 '*1.0.2  1/10/2019   Add mGetSubErrInf 
 '*1.0.3  4/11/2019   Add LastErr
@@ -25,6 +25,9 @@
 '*1.0.18 26/1/2021   Change some sub or function Public to Friend, modify 
 '*1.0.19 27/1/2021   Change KeyInf,ClearErr Public to Friend, modify 
 '*1.0.20 20/2/2021   Fix bug mstrKeyInf is nothing
+'*1.0.21 25/2/2021   Fix bug mstrLastErr is nothing
+'*1.0.22 6/7/2021   Modify New 
+'*1.0.23 9/7/2021   Modify New for fix bugs that identify Windows and Linux operating system types.
 '************************************
 Imports System.Runtime.InteropServices
 Public Class PigBaseMini
@@ -37,7 +40,7 @@ Public Class PigBaseMini
     ''' 类版本
     ''' </summary>
     Private mstrClsVersion As String
-    Private mstrLastErr As String
+    Private mstrLastErr As String = ""
     Private mbolIsDebug As Boolean
     Private mbolIsHardDebug As Boolean
     Private mstrDebugFilePath As String
@@ -47,9 +50,11 @@ Public Class PigBaseMini
     Public Sub New(Version As String)
         mstrClsName = Me.GetType.Name.ToString()
         mstrClsVersion = Version
-        mbolIsWindows = True
-#If net50 Or netcoreapp31 Or netcoreapp30 Or netcoreapp22 Or netcoreapp21 Or netcoreapp20 Or netcoreapp11 Or netcoreapp10 Then
+
+#If NETCOREAPP Or NET5_0_OR_GREATER Then
         mbolIsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+#Else
+        mbolIsWindows = True
 #End If
         If mbolIsWindows = True Then
             mstrOsCrLf = vbCrLf

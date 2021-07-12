@@ -4,7 +4,7 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: 企业微信应用类
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.0.10
+'* Version: 1.0.11
 '* Create Time: 23/2/2021
 '* 1.0.2  25/2/2021   Add GetErrMsg, Modify mNew
 '* 1.0.3  1/3/2021   Add RefAccessToken,Oauth2
@@ -15,6 +15,7 @@
 '* 1.0.8  8/3/2021   Modify GetApiIpList
 '* 1.0.9  10/3/2021   Modify AccessToken
 '* 1.0.10  15/4/2021  Use PigToolsWinLib
+'* 1.0.11  17/5/2021  Modify _New
 '**********************************
 
 Imports System.Web
@@ -76,14 +77,19 @@ Public Class WorkApp
 	End Sub
 
 	Private Sub mNew(CorpId As String, CorpSecret As String, Optional AccessToken As String = "", Optional ExpiresTime As DateTime = Nothing)
-		mstrCorpId = CorpId
-		mstrCorpSecret = CorpSecret
-		mstrAccessToken = AccessToken
-		If IsNothing(ExpiresTime) Then
-			mdteAccessTokenExpiresTime = New DateTime(1970, 1, 1)
-		Else
-			mdteAccessTokenExpiresTime = ExpiresTime
-		End If
+		Try
+			mstrCorpId = CorpId
+			mstrCorpSecret = CorpSecret
+			mstrAccessToken = AccessToken
+			If IsNothing(ExpiresTime) Then
+				mdteAccessTokenExpiresTime = New DateTime(1970, 1, 1)
+			Else
+				mdteAccessTokenExpiresTime = ExpiresTime
+			End If
+			Me.ClearErr()
+		Catch ex As Exception
+			Me.SetSubErrInf("mNew", ex)
+		End Try
 	End Sub
 
 	''' <summary>
