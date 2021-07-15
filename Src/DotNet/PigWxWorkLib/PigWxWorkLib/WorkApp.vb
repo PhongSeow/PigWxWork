@@ -4,7 +4,7 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: 企业微信应用类
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.0.11
+'* Version: 1.0.12
 '* Create Time: 23/2/2021
 '* 1.0.2  25/2/2021   Add GetErrMsg, Modify mNew
 '* 1.0.3  1/3/2021   Add RefAccessToken,Oauth2
@@ -16,6 +16,7 @@
 '* 1.0.9  10/3/2021   Modify AccessToken
 '* 1.0.10  15/4/2021  Use PigToolsWinLib
 '* 1.0.11  17/5/2021  Modify _New
+'* 1.0.12  14/7/2021  Modify GetWorkMemberFromOauth2Redirect,GetUserIdentity
 '**********************************
 
 Imports System.Web
@@ -25,7 +26,7 @@ Imports PigToolsWinLib
 
 Public Class WorkApp
 	Inherits PigBaseMini
-	Private Const CLS_VERSION As String = "1.0.10"
+	Private Const CLS_VERSION As String = "1.0.12"
 	Private Const QYAPI_URL As String = "https://qyapi.weixin.qq.com"
 	Private Const QYAPI_CGIBIN_URL As String = QYAPI_URL & "/cgi-bin"
 	Private Const OEPN_WX_URL As String = "https://open.weixin.qq.com"
@@ -74,6 +75,10 @@ Public Class WorkApp
 
 	Public Shadows Sub SetDebug(DebugFilePath As String)
 		MyBase.SetDebug(DebugFilePath)
+	End Sub
+
+	Public Shadows Sub SetDebug(DebugFilePath As String, IsHardDebug As Boolean)
+		MyBase.SetDebug(DebugFilePath, IsHardDebug)
 	End Sub
 
 	Private Sub mNew(CorpId As String, CorpSecret As String, Optional AccessToken As String = "", Optional ExpiresTime As DateTime = Nothing)
@@ -154,6 +159,7 @@ Public Class WorkApp
 	''' </summary>
 	''' <param name="IsForce">是否强制刷新，企业微信可能会出于运营需要，提前使access_token失效，开发者应实现access_token失效时重新获取的逻辑。</param>
 	Public Sub RefAccessToken(Optional IsForce As Boolean = False)
+		Const SUB_NAME As String = "RefAccessToken"
 		Dim strStepName As String = ""
 		Try
 			If mstrAccessToken = "" Or mdteAccessTokenExpiresTime < Now.AddMinutes(-1) Or IsForce = True Then
@@ -191,8 +197,8 @@ Public Class WorkApp
 			End If
 			Me.ClearErr()
 		Catch ex As Exception
-			Me.SetSubErrInf("RefAccessToken", strStepName, ex)
-			If Me.IsDebug = True Then Me.PrintDebugLog(Me.LastErr)
+			Me.SetSubErrInf(SUB_NAME, strStepName, ex)
+			If Me.IsDebug = True Then Me.PrintDebugLog(SUB_NAME, "Catch ex As Exception", Me.LastErr)
 		End Try
 	End Sub
 
@@ -202,6 +208,7 @@ Public Class WorkApp
 	''' <param name="HttpContext"></param>
 	''' <param name="IsGetDetInf">是否获取详细信息，如果可以从数据库获取，可以使用默认值</param>
 	Public Function GetWorkMemberFromOauth2Redirect(HttpContext As HttpContext, Optional IsGetDetInf As Boolean = False) As WorkMember
+		Const SUB_NAME As String = "GetWorkMemberFromOauth2Redirect"
 		Dim strStepName As String = ""
 		Try
 			strStepName = "New PigHttpContext"
@@ -219,7 +226,7 @@ Public Class WorkApp
 			GetWorkMemberFromOauth2Redirect = oWorkMember
 			Me.ClearErr()
 		Catch ex As Exception
-			Me.SetSubErrInf("GetWorkMemberFromOauth2Redirect", ex)
+			Me.SetSubErrInf(SUB_NAME, strStepName, ex)
 			Return Nothing
 		End Try
 	End Function
@@ -241,6 +248,7 @@ Public Class WorkApp
 	''' </summary>
 	''' <param name="oWorkMember">企业微信成员</param>
 	Public Sub MailList_ReadMember(ByRef oWorkMember As WorkMember)
+		Const SUB_NAME As String = "MailList_ReadMember"
 		Dim strStepName As String = ""
 		Try
 			If Me.IsAccessTokenReady = False Then
@@ -257,10 +265,12 @@ Public Class WorkApp
 			Dim oPigWebReq As New PigWebReq(strUrl)
 			With oPigWebReq
 				strStepName = "PigWebReq.GetText"
+				Me.PrintDebugLog(SUB_NAME, strStepName, strUrl, True)
 				.GetText()
 				If .LastErr <> "" Then
 					Throw New Exception(.LastErr)
 				Else
+					Me.PrintDebugLog(SUB_NAME, strStepName, .ResString, True)
 					strStepName = "New PigJSon"
 					Dim oPigJSon As New PigJSon(.ResString)
 					If oPigJSon.LastErr <> "" Then Throw New Exception(oPigJSon.LastErr)
@@ -277,7 +287,7 @@ Public Class WorkApp
 			End With
 			Me.ClearErr()
 		Catch ex As Exception
-			Me.SetSubErrInf("MailList_ReadMember", strStepName, ex)
+			Me.SetSubErrInf(SUB_NAME, strStepName, ex)
 		End Try
 	End Sub
 
@@ -288,6 +298,7 @@ Public Class WorkApp
 	''' <param name="Code">通过成员授权获取到的code，最大为512字节。每次成员授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期。</param>
 	''' <param name="oWorkMember">企业微信成员</param>
 	Friend Sub GetUserIdentity(Code As String, ByRef oWorkMember As WorkMember)
+		Const SUB_NAME As String = "GetUserIdentity"
 		Dim strStepName As String = ""
 		Try
 			If Me.IsAccessTokenReady = False Then
@@ -300,10 +311,12 @@ Public Class WorkApp
 			Dim oPigWebReq As New PigWebReq(strUrl)
 			With oPigWebReq
 				strStepName = "PigWebReq.GetText"
+				Me.PrintDebugLog(SUB_NAME, strStepName, strUrl, True)
 				.GetText()
 				If .LastErr <> "" Then
 					Throw New Exception(.LastErr)
 				Else
+					Me.PrintDebugLog(SUB_NAME, strStepName, .ResString, True)
 					strStepName = "New PigJSon"
 					Dim oPigJSon As New PigJSon(.ResString)
 					If oPigJSon.LastErr <> "" Then Throw New Exception(oPigJSon.LastErr)
@@ -313,6 +326,8 @@ Public Class WorkApp
 							strStepName = "设置oWorkMember属性"
 							oWorkMember.UserId = oPigJSon.GetStrValue("UserId")
 							oWorkMember.DeviceId = oPigJSon.GetStrValue("DeviceId")
+							Me.PrintDebugLog(SUB_NAME, strStepName, "UserId=" & oWorkMember.UserId, True)
+							Me.PrintDebugLog(SUB_NAME, strStepName, "DeviceId=" & oWorkMember.DeviceId, True)
 						Case Else
 							Throw New Exception(oPigJSon.GetStrValue("errmsg"))
 					End Select
@@ -320,7 +335,7 @@ Public Class WorkApp
 			End With
 			Me.ClearErr()
 		Catch ex As Exception
-			Me.SetSubErrInf("GetUserIdentity", strStepName, ex)
+			Me.SetSubErrInf(SUB_NAME, strStepName, ex)
 		End Try
 	End Sub
 
@@ -330,6 +345,7 @@ Public Class WorkApp
 	''' </summary>
 	''' <returns>地址数组</returns>
 	Public Function GetApiIpList() As String()
+		Const SUB_NAME As String = "GetApiIpList"
 		Dim strStepName As String = ""
 		Try
 			If Me.IsAccessTokenReady = False Then
@@ -367,7 +383,7 @@ Public Class WorkApp
 			End With
 			Me.ClearErr()
 		Catch ex As Exception
-			Me.SetSubErrInf("RefAccessToken", strStepName, ex)
+			Me.SetSubErrInf(SUB_NAME, strStepName, ex)
 			Return Nothing
 		End Try
 	End Function

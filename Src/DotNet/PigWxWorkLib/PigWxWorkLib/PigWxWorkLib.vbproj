@@ -13,9 +13,9 @@
     <RepositoryType>GIT</RepositoryType>
     <PackageTags>PigWxWorkLib 企业微信 Work WeChat</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.4.1</Version>
+    <Version>1.0.5.11</Version>
     <Description>这是一个接口简单，容易理解的企业微信开发工具应用，现在刚刚起步，后续还会不断迭代更多功能。</Description>
-    <PackageReleaseNotes>修复 PigBaseMini 的 Bug 和引用最新版本的类库。</PackageReleaseNotes>
+    <PackageReleaseNotes>优化调试处理。</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
