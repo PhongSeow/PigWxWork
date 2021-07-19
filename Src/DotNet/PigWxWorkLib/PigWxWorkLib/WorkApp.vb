@@ -4,7 +4,7 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: 企业微信应用类
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.0.12
+'* Version: 1.0.13
 '* Create Time: 23/2/2021
 '* 1.0.2  25/2/2021   Add GetErrMsg, Modify mNew
 '* 1.0.3  1/3/2021   Add RefAccessToken,Oauth2
@@ -17,6 +17,7 @@
 '* 1.0.10  15/4/2021  Use PigToolsWinLib
 '* 1.0.11  17/5/2021  Modify _New
 '* 1.0.12  14/7/2021  Modify GetWorkMemberFromOauth2Redirect,GetUserIdentity
+'* 1.0.13  15/7/2021  Modify GetUserIdentity
 '**********************************
 
 Imports System.Web
@@ -26,7 +27,7 @@ Imports PigToolsWinLib
 
 Public Class WorkApp
 	Inherits PigBaseMini
-	Private Const CLS_VERSION As String = "1.0.12"
+	Private Const CLS_VERSION As String = "1.0.13"
 	Private Const QYAPI_URL As String = "https://qyapi.weixin.qq.com"
 	Private Const QYAPI_CGIBIN_URL As String = QYAPI_URL & "/cgi-bin"
 	Private Const OEPN_WX_URL As String = "https://open.weixin.qq.com"
@@ -326,8 +327,10 @@ Public Class WorkApp
 							strStepName = "设置oWorkMember属性"
 							oWorkMember.UserId = oPigJSon.GetStrValue("UserId")
 							oWorkMember.DeviceId = oPigJSon.GetStrValue("DeviceId")
+							oWorkMember.OpenID = oPigJSon.GetStrValue("OpenId")
 							Me.PrintDebugLog(SUB_NAME, strStepName, "UserId=" & oWorkMember.UserId, True)
 							Me.PrintDebugLog(SUB_NAME, strStepName, "DeviceId=" & oWorkMember.DeviceId, True)
+							Me.PrintDebugLog(SUB_NAME, strStepName, "OpenID=" & oWorkMember.OpenID, True)
 						Case Else
 							Throw New Exception(oPigJSon.GetStrValue("errmsg"))
 					End Select

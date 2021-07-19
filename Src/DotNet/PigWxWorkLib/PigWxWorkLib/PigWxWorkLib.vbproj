@@ -11,11 +11,19 @@
     <PackageProjectUrl>https://en.seowphong.com/oss/PigWxWork/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/PhongSeow/PigWxWork/tree/master/Src/DotNet/PigWxWorkLib</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
-    <PackageTags>PigWxWorkLib 企业微信 Work WeChat</PackageTags>
+    <PackageTags>PigWxWorkLib 企业微信 Work WeChat  WorkApp WorkMember 刷新access_token 获取企业微信API域名IP段 获取构造网页授权链接 获取访问用户身份 通讯录管理</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.5.11</Version>
-    <Description>这是一个接口简单，容易理解的企业微信开发工具应用，现在刚刚起步，后续还会不断迭代更多功能。</Description>
-    <PackageReleaseNotes>优化调试处理。</PackageReleaseNotes>
+    <Version>1.0.6.3</Version>
+    <Description>这是一个接口简单，容易理解的企业微信开发工具应用，现在刚刚起步，后续还会不断迭代更多功能。
+功能包括：
+刷新access_token
+获取企业微信API域名IP段
+获取构造网页授权链接
+获取访问用户身份
+处理OAuth2登录后从企业微信跳转回来并获取一个 WorkMember 对象
+通讯录管理-读取成员
+</Description>
+    <PackageReleaseNotes>优化调试及错误处理，修复 获取访问用户身份 的BUG。</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
