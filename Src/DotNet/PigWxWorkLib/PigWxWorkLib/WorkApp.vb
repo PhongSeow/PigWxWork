@@ -74,13 +74,13 @@ Public Class WorkApp
 		End Get
 	End Property
 
-	Public Shadows Sub SetDebug(DebugFilePath As String)
-		MyBase.SetDebug(DebugFilePath)
-	End Sub
+	'Public Shadows Sub SetDebug(DebugFilePath As String)
+	'	MyBase.SetDebug(DebugFilePath)
+	'End Sub
 
-	Public Shadows Sub SetDebug(DebugFilePath As String, IsHardDebug As Boolean)
-		MyBase.SetDebug(DebugFilePath, IsHardDebug)
-	End Sub
+	'Public Shadows Sub SetDebug(DebugFilePath As String, IsHardDebug As Boolean)
+	'	MyBase.SetDebug(DebugFilePath, IsHardDebug)
+	'End Sub
 
 	Private Sub mNew(CorpId As String, CorpSecret As String, Optional AccessToken As String = "", Optional ExpiresTime As DateTime = Nothing)
 		Try

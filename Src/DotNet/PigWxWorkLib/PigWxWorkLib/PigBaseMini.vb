@@ -4,7 +4,7 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: Basic lightweight Edition
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.0.25
+'* Version: 1.0.27
 '* Create Time: 31/8/2019
 '*1.0.2  1/10/2019   Add mGetSubErrInf 
 '*1.0.3  4/11/2019   Add LastErr
@@ -30,17 +30,12 @@
 '*1.0.23 9/7/2021    Modify New for fix bugs that identify Windows and Linux operating system types.
 '*1.0.24 14/7/2021   Modify mPrintDebugLog
 '*1.0.25 15/7/2021   Modify mPrintDebugLog,PrintDebugLog,mGetSubErrInf
+'*1.0.26 23/7/2021   Modify mPrintDebugLog,mGetSubErrInf,FullSubName add AppVersion
+'*1.0.27 25/7/2021   Add mOpenDebug,OpenDebug, remove GetSubStepDebugInf, Modify mstrAppTitle
 '************************************
 Imports System.Runtime.InteropServices
 Public Class PigBaseMini
-    ''' <summary>
-    ''' 类名
-    ''' </summary>
     Private mstrClsName As String
-
-    ''' <summary>
-    ''' 类版本
-    ''' </summary>
     Private mstrClsVersion As String
     Private mstrLastErr As String = ""
     Private mbolIsDebug As Boolean
@@ -67,46 +62,38 @@ Public Class PigBaseMini
         End If
     End Sub
 
-    ''' <remarks>返回成功</remarks>
     Friend Sub ClearErr()
         mstrLastErr = ""
     End Sub
 
-    ''' <summary>设置调试</summary>
     Friend Overloads Sub SetDebug(DebugFilePath As String)
         mbolIsDebug = True
         mbolIsHardDebug = False
         mstrDebugFilePath = DebugFilePath
     End Sub
 
-    ''' <summary>设置调试</summary>
     Friend Overloads Sub SetDebug(DebugFilePath As String, IsHardDebug As Boolean)
         mbolIsDebug = True
         mbolIsHardDebug = IsHardDebug
         mstrDebugFilePath = DebugFilePath
     End Sub
 
-    ''' <summary>调试</summary>
     Friend Overloads Function PrintDebugLog(SubName As String, LogInf As String, IsHardDebug As Boolean) As String
         PrintDebugLog = Me.mPrintDebugLog(SubName, "", LogInf, IsHardDebug)
     End Function
 
-    ''' <summary>调试</summary>
     Friend Overloads Function PrintDebugLog(SubName As String, StepName As String, LogInf As String, IsHardDebug As Boolean) As String
         PrintDebugLog = Me.mPrintDebugLog(SubName, StepName, LogInf, IsHardDebug)
     End Function
 
-    ''' <summary>调试</summary>
     Friend Overloads Function PrintDebugLog(SubName As String, StepName As String, LogInf As String) As String
         PrintDebugLog = Me.mPrintDebugLog(SubName, StepName, LogInf, False)
     End Function
 
-    ''' <summary>调试</summary>
     Friend Overloads Function PrintDebugLog(SubName As String, LogInf As String) As String
         PrintDebugLog = Me.mPrintDebugLog(SubName, "", LogInf, False)
     End Function
 
-    ''' <summary>调试</summary>
     Private Function mPrintDebugLog(SubName As String, StepName As String, LogInf As String, IsHardDebug As Boolean) As String
         Try
             If IsHardDebug = True And mbolIsHardDebug = False Then Throw New Exception("Only hard debug mode can print logs")
@@ -121,9 +108,9 @@ Public Class PigBaseMini
             Else
                 sbAny.Append("[Debug]")
             End If
-            sbAny.Append("[" & Me.AppTitle & "][" & Me.MyClassName & "." & SubName)
+            sbAny.Append("[" & Me.AppTitle & "(" & Me.AppVersion & ")][" & Me.MyClassName & "(" & Me.mstrClsVersion & ")." & SubName)
             If StepName <> "" Then
-                sbAny.Append("." & StepName)
+                sbAny.Append("{" & StepName & "}")
             End If
             sbAny.Append("]")
             sbAny.Append(LogInf)
@@ -137,14 +124,12 @@ Public Class PigBaseMini
         End Try
     End Function
 
-    ''' <summary>我的类名</summary>
     Public Overloads ReadOnly Property MyClassName() As String
         Get
             MyClassName = mstrClsName
         End Get
     End Property
 
-    ''' <summary>我的类名</summary>
     Public Overloads ReadOnly Property MyClassName(IsIncAppTitle As Boolean) As String
         Get
             If IsIncAppTitle = True Then
@@ -154,56 +139,67 @@ Public Class PigBaseMini
         End Get
     End Property
 
-    ''' <summary>是否硬调试</summary>
     Friend ReadOnly Property IsHardDebug() As Boolean
         Get
             IsHardDebug = mbolIsHardDebug
         End Get
     End Property
 
-    ''' <summary>是否调试</summary>
     Friend ReadOnly Property IsDebug() As Boolean
         Get
             IsDebug = mbolIsDebug
         End Get
     End Property
 
-    ''' <summary>应用标题</summary>
+    Private mstrAppTitle As String = ""
     Friend ReadOnly Property AppTitle() As String
         Get
-            Return System.Reflection.Assembly.GetExecutingAssembly().GetName.Name
+            If mstrAppTitle = "" Then mstrAppTitle = System.Reflection.Assembly.GetExecutingAssembly().GetName.Name
+            Return mstrAppTitle
         End Get
     End Property
 
-    ''' <summary>应用路径</summary>
+    Private mstrAppVersion As String = ""
+    Friend ReadOnly Property AppVersion() As String
+        Get
+            If mstrAppVersion = "" Then mstrAppVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName.Version.ToString
+            Return mstrAppVersion
+        End Get
+    End Property
+
+    Private mstrAppPath As String = ""
     Friend ReadOnly Property AppPath() As String
         Get
-            Return System.AppDomain.CurrentDomain.BaseDirectory
+            If mstrAppPath = "" Then
+                mstrAppPath = System.AppDomain.CurrentDomain.BaseDirectory
+                If Right(mstrAppPath, 1) = Me.OsPathSep Then
+                    mstrAppPath = Left(mstrAppPath, mstrAppPath.Length - 1)
+                End If
+            End If
+            Return mstrAppPath
         End Get
     End Property
 
 
-    ''' <remarks>最近的错误信息</remarks>
     Public ReadOnly Property LastErr() As String
         Get
             LastErr = mstrLastErr
         End Get
     End Property
 
-    ''' <remarks>完整过程名</remarks>
     Friend ReadOnly Property FullSubName(SubName As String) As String
         Get
-            FullSubName = mstrClsName & "." & SubName
+            FullSubName = mstrClsName & "(" & Me.mstrClsVersion & ")." & SubName
         End Get
     End Property
 
     Private Function mGetSubErrInf(SubName As String, StepName As String, ByRef exIn As System.Exception, Optional IsStackTrace As Boolean = False, Optional IsSetLastErr As Boolean = False) As String
         Try
             Dim sbAny As New System.Text.StringBuilder("[Error]")
-            sbAny.Append("[" & Me.AppTitle & "][")
+            sbAny.Append("[" & Me.AppTitle & "][" & Me.AppVersion & "][")
             sbAny.Append(Me.FullSubName(SubName))
             If StepName.Length > 0 Then
-                sbAny.Append("." & StepName)
+                sbAny.Append("{" & StepName & "}")
             End If
             sbAny.Append("]")
             If mstrKeyInf.Length > 0 Then sbAny.Append("[Key:" & mstrKeyInf & "]")
@@ -230,60 +226,44 @@ Public Class PigBaseMini
         End Try
     End Function
 
-    ''' <summary>设置过程错误信息,用于不返回结果的调用，结果会保存在LastErr，但如果执行成功，要调用ClearErr</summary>
-    ''' <param name="SubName">过程名</param>
-    ''' <param name="exIn">错误对象</param>
-    ''' <param name="IsStackTrace">是否跟踪</param>
     Friend Overloads Sub SetSubErrInf(SubName As String, ByRef exIn As System.Exception, Optional IsStackTrace As Boolean = False)
         Me.mGetSubErrInf(SubName, "", exIn, IsStackTrace, True)
     End Sub
 
-    ''' <summary>设置过程错误信息,带步骤名称,用于不返回结果的调用，结果会保存在LastErr，但如果执行成功，要调用ClearErr</summary>
-    ''' <param name="SubName">过程名</param>
-    ''' <param name="StepName">步骤名</param>
-    ''' <param name="exIn">错误对象</param>
-    ''' <param name="IsStackTrace">是否跟踪</param>
     Friend Overloads Sub SetSubErrInf(SubName As String, StepName As String, ByRef exIn As System.Exception, Optional IsStackTrace As Boolean = False)
         Me.mGetSubErrInf(SubName, StepName, exIn, IsStackTrace, True)
     End Sub
 
 
-    ''' <summary>获取过程错误信息</summary>
-    ''' <param name="SubName">过程名</param>
-    ''' <param name="exIn">错误对象</param>
-    ''' <param name="IsStackTrace">是否跟踪</param>
     Friend Overloads Function GetSubErrInf(SubName As String, ByRef exIn As System.Exception, Optional IsStackTrace As Boolean = False) As String
         GetSubErrInf = Me.mGetSubErrInf(SubName, "", exIn, IsStackTrace)
     End Function
 
-    ''' <remarks>获取过程错误信息，带步骤名称</remarks>
+    ''' <summary>Get process error information with step name</summary>
     Friend Overloads Function GetSubErrInf(SubName As String, StepName As String, ByRef exIn As System.Exception, Optional IsStackTrace As Boolean = False) As String
         GetSubErrInf = Me.mGetSubErrInf(SubName, StepName, exIn, IsStackTrace)
     End Function
 
-    ''' <remarks>获取未出错时过程调试信息</remarks>
-    Friend Function GetSubStepDebugInf(SubName As String, StepName As String, DebugInf As String) As String
-        Try
-            Dim sbAny As New System.Text.StringBuilder("")
-            sbAny.Append(Me.FullSubName(SubName))
-            If StepName.Length > 0 Then
-                sbAny.Append("(")
-                sbAny.Append(StepName)
-                sbAny.Append(")")
-            End If
-            If mstrKeyInf.Length > 0 Then sbAny.Append(";Key:" & mstrKeyInf)
-            sbAny.Append(";Debug:")
-            sbAny.Append(DebugInf)
-            Return sbAny.ToString
-            sbAny = Nothing
-        Catch ex As Exception
-            Return ex.Message.ToString
-        End Try
-    End Function
+    '''' <remarks>获取未出错时过程调试信息</remarks>
+    'Friend Function GetSubStepDebugInf(SubName As String, StepName As String, DebugInf As String) As String
+    '    Try
+    '        Dim sbAny As New System.Text.StringBuilder("")
+    '        sbAny.Append(Me.FullSubName(SubName))
+    '        If StepName.Length > 0 Then
+    '            sbAny.Append("(")
+    '            sbAny.Append(StepName)
+    '            sbAny.Append(")")
+    '        End If
+    '        If mstrKeyInf.Length > 0 Then sbAny.Append(";Key:" & mstrKeyInf)
+    '        sbAny.Append(";Debug:")
+    '        sbAny.Append(DebugInf)
+    '        Return sbAny.ToString
+    '        sbAny = Nothing
+    '    Catch ex As Exception
+    '        Return ex.Message.ToString
+    '    End Try
+    'End Function
 
-    ''' <summary>
-    ''' 是否 Windows
-    ''' </summary>
     Private mbolIsWindows As Boolean
     Friend ReadOnly Property IsWindows() As Boolean
         Get
@@ -292,7 +272,7 @@ Public Class PigBaseMini
     End Property
 
     ''' <summary>
-    ''' 跨平台换行符，自动识别 Windows 和 Linux
+    ''' Cross platform line feed, automatically identifying windows and Linux
     ''' </summary>
     Private mstrOsCrLf As String
     Friend ReadOnly Property OsCrLf() As String
@@ -302,7 +282,7 @@ Public Class PigBaseMini
     End Property
 
     ''' <summary>
-    ''' 跨平台路径分隔符，自动识别 Windows 和 Linux
+    ''' Cross platform path separator, automatically identifying Windows and Linux
     ''' </summary>
     Private mstrOsPathSep As String
     Friend ReadOnly Property OsPathSep() As String
@@ -310,5 +290,35 @@ Public Class PigBaseMini
             Return mstrOsPathSep
         End Get
     End Property
+
+    Public Sub OpenDebug()
+        Me.mOpenDebug()
+    End Sub
+
+    Public Sub OpenDebug(LogFileDir As String)
+        Me.mOpenDebug(LogFileDir)
+    End Sub
+
+    Public Sub OpenDebug(LogFileDir As String, IsIncDate As Boolean)
+        Me.mOpenDebug(LogFileDir, IsIncDate)
+    End Sub
+
+    Public Sub OpenDebug(IsIncDate As Boolean)
+        Me.mOpenDebug(, IsIncDate)
+    End Sub
+
+    Private Sub mOpenDebug(Optional LogFileDir As String = "", Optional IsIncDate As Boolean = False)
+        Try
+            Dim strLogFilePath As String = Me.AppTitle
+            If LogFileDir = "" Then LogFileDir = Me.AppPath
+            Dim dteNow As DateTime = DateTime.Now
+            If IsIncDate = True Then strLogFilePath &= dteNow.ToString("yyyyMMdd")
+            strLogFilePath = LogFileDir & Me.OsPathSep & strLogFilePath & ".log"
+            Me.SetDebug(strLogFilePath)
+            Me.ClearErr()
+        Catch ex As Exception
+            Me.SetSubErrInf("mOpenDebug", ex)
+        End Try
+    End Sub
 
 End Class
