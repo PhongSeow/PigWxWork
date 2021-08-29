@@ -4,7 +4,7 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: 企业微信应用类
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.0.15
+'* Version: 1.1
 '* Create Time: 23/2/2021
 '* 1.0.2  25/2/2021   Add GetErrMsg, Modify mNew
 '* 1.0.3  1/3/2021   Add RefAccessToken,Oauth2
@@ -19,15 +19,18 @@
 '* 1.0.12  14/7/2021  Modify GetWorkMemberFromOauth2Redirect,GetUserIdentity
 '* 1.0.13  15/7/2021  Modify GetUserIdentity
 '* 1.0.15  25/8/2021  Remove Imports PigToolsLib
+'* 1.1  29/8/2021  Use PigToolsLiteLib
 '**********************************
 
 Imports System.Web
 Imports System.Web.Services
 Imports PigToolsWinLib
+Imports PigToolsLiteLib
+
 
 Public Class WorkApp
 	Inherits PigBaseMini
-	Private Const CLS_VERSION As String = "1.0.15.2"
+	Private Const CLS_VERSION As String = "1.1.2"
 	Private Const QYAPI_URL As String = "https://qyapi.weixin.qq.com"
 	Private Const QYAPI_CGIBIN_URL As String = QYAPI_URL & "/cgi-bin"
 	Private Const OEPN_WX_URL As String = "https://open.weixin.qq.com"
