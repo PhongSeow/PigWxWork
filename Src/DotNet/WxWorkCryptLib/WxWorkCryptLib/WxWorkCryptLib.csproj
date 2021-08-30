@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net40;net50;</TargetFrameworks>
+    <TargetFrameworks>net20;net30;netcoreapp3.1;net40;net50;</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://work.weixin.qq.com/api/doc/90000/90138/90307</PackageProjectUrl>
@@ -12,6 +12,8 @@
 源码下载地址：https://open.work.weixin.qq.com/wwopen/downloadfile/csharp.zip 。</Description>
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
+    <Version>1.1.3</Version>
+    <PackageReleaseNotes>Added support for. Net 2.0 and. Net 3.0 frameworks.</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
