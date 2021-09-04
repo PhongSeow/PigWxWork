@@ -13,8 +13,8 @@
     <RepositoryType>GIT</RepositoryType>
     <PackageTags>PigWxWorkLib 企业微信 Work WeChat  WorkApp WorkMember 刷新access_token 获取企业微信API域名IP段 获取构造网页授权链接 获取访问用户身份 通讯录管理</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.1</Version>
-    <Description>这是一个接口简单，容易理解的企业微信开发工具应用，现在刚刚起步，后续还会不断迭代更多功能。
+    <Version>1.2.3</Version>
+    <Description>这是一个接口简单，容易理解的企业微信开发工具应用。
 功能包括：
 刷新access_token
 获取企业微信API域名IP段
@@ -23,7 +23,7 @@
 处理OAuth2登录后从企业微信跳转回来并获取一个 WorkMember 对象
 通讯录管理-读取成员
 </Description>
-    <PackageReleaseNotes>增加支持 .net 2.0 和 .net 3.0 的框架。</PackageReleaseNotes>
+    <PackageReleaseNotes>引用最新的 PigToolsWinLib</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="PigToolsWinLib" Version="1.1.6" />
+    <PackageReference Include="PigToolsWinLib" Version="1.1.8" />
     <PackageReference Include="WxWorkCryptLib" Version="1.1.3" />
   </ItemGroup>
 
