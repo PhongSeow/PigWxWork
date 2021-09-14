@@ -4,7 +4,7 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: Basic lightweight Edition
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.0.27
+'* Version: 1.1.1
 '* Create Time: 31/8/2019
 '*1.0.2  1/10/2019   Add mGetSubErrInf 
 '*1.0.3  4/11/2019   Add LastErr
@@ -32,6 +32,7 @@
 '*1.0.25 15/7/2021   Modify mPrintDebugLog,PrintDebugLog,mGetSubErrInf
 '*1.0.26 23/7/2021   Modify mPrintDebugLog,mGetSubErrInf,FullSubName add AppVersion
 '*1.0.27 25/7/2021   Add mOpenDebug,OpenDebug, remove GetSubStepDebugInf, Modify mstrAppTitle
+'*1.1.1 31/8/2021    Modify MyClassName
 '************************************
 Imports System.Runtime.InteropServices
 Public Class PigBaseMini
@@ -124,10 +125,13 @@ Public Class PigBaseMini
         End Try
     End Function
 
-    Public Overloads ReadOnly Property MyClassName() As String
+    Public Overloads Property MyClassName() As String
         Get
             MyClassName = mstrClsName
         End Get
+        Friend Set(value As String)
+            mstrClsName = value
+        End Set
     End Property
 
     Public Overloads ReadOnly Property MyClassName(IsIncAppTitle As Boolean) As String

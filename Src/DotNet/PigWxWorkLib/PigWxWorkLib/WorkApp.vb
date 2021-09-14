@@ -19,7 +19,8 @@
 '* 1.0.12  14/7/2021  Modify GetWorkMemberFromOauth2Redirect,GetUserIdentity
 '* 1.0.13  15/7/2021  Modify GetUserIdentity
 '* 1.0.15  25/8/2021  Remove Imports PigToolsLib
-'* 1.1  29/8/2021  Use PigToolsLiteLib
+'* 1.1  29/8/2021	Use PigToolsLiteLib
+'* 1.2  13/9/2021	Add  mWebReqGetText,
 '**********************************
 
 Imports System.Web
@@ -30,7 +31,7 @@ Imports PigToolsLiteLib
 
 Public Class WorkApp
 	Inherits PigBaseMini
-	Private Const CLS_VERSION As String = "1.1.2"
+	Private Const CLS_VERSION As String = "1.2.2"
 	Private Const QYAPI_URL As String = "https://qyapi.weixin.qq.com"
 	Private Const QYAPI_CGIBIN_URL As String = QYAPI_URL & "/cgi-bin"
 	Private Const OEPN_WX_URL As String = "https://open.weixin.qq.com"
@@ -294,6 +295,84 @@ Public Class WorkApp
 			Me.SetSubErrInf(SUB_NAME, strStepName, ex)
 		End Try
 	End Sub
+
+	Private Function mWebReqGetText(ByRef PigWebReq As PigWebReq, ByRef ResPigJSon As PigJSon, Url As String) As String
+		Const SUB_NAME As String = "mWebReqGetText"
+		Dim strStepName As String = ""
+		Try
+			strStepName = "New PigWebReq"
+			PigWebReq = New PigWebReq(Url)
+			If PigWebReq.LastErr <> "" Then
+				If Me.IsDebug Or Me.IsHardDebug Then strStepName &= "(" & Url & ")"
+				Throw New Exception()
+			End If
+			With PigWebReq
+				strStepName = "GetText"
+				.GetText()
+				If .LastErr <> "" Then
+					If Me.IsDebug Or Me.IsHardDebug Then strStepName &= "(" & Url & ")"
+					Throw New Exception(.LastErr)
+				Else
+					ResPigJSon = Nothing
+					strStepName = "New PigJSon"
+					ResPigJSon = New PigJSon(.ResString)
+					If ResPigJSon.LastErr <> "" Then
+						If Me.IsDebug Or Me.IsHardDebug Then strStepName &= "(" & Url & ")"
+						Throw New Exception(ResPigJSon.LastErr)
+					End If
+					strStepName = "检查 errcode"
+					Select Case ResPigJSon.GetStrValue("errcode")
+						Case "0"
+						Case Else
+							If Me.IsDebug Or Me.IsHardDebug Then strStepName &= "(" & Url & ")"
+							Throw New Exception(ResPigJSon.GetStrValue("errmsg"))
+					End Select
+				End If
+			End With
+			Return "OK"
+		Catch ex As Exception
+			Return Me.GetSubErrInf(SUB_NAME, strStepName, ex)
+		End Try
+	End Function
+
+	Private Function mWebReqPostText(ByRef PigWebReq As PigWebReq, ByRef ResPigJSon As PigJSon, Url As String, Para As String) As String
+		Const SUB_NAME As String = "mWebReqPostText"
+		Dim strStepName As String = ""
+		Try
+			strStepName = "New PigWebReq"
+			PigWebReq = New PigWebReq(Url)
+			If PigWebReq.LastErr <> "" Then
+				If Me.IsDebug Or Me.IsHardDebug Then strStepName &= "(" & Url & ")"
+				Throw New Exception()
+			End If
+			With PigWebReq
+				strStepName = "PostText"
+				.PostText(Para)
+				If .LastErr <> "" Then
+					If Me.IsDebug Or Me.IsHardDebug Then strStepName &= "(" & Url & "?" & Para & ")"
+					Throw New Exception(.LastErr)
+				Else
+					ResPigJSon = Nothing
+					strStepName = "New PigJSon"
+					ResPigJSon = New PigJSon(.ResString)
+					If ResPigJSon.LastErr <> "" Then
+						If Me.IsDebug Or Me.IsHardDebug Then strStepName &= "(" & Url & "?" & Para & ")"
+						Throw New Exception(ResPigJSon.LastErr)
+					End If
+					strStepName = "检查 errcode"
+					Select Case ResPigJSon.GetStrValue("errcode")
+						Case "0"
+						Case Else
+							If Me.IsDebug Or Me.IsHardDebug Then strStepName &= "(" & Url & "?" & Para & ")"
+							Throw New Exception(ResPigJSon.GetStrValue("errmsg"))
+					End Select
+				End If
+			End With
+			Return "OK"
+		Catch ex As Exception
+			Return Me.GetSubErrInf(SUB_NAME, strStepName, ex)
+		End Try
+	End Function
 
 
 	''' <summary>
@@ -1637,4 +1716,43 @@ Public Class WorkApp
 			Return ""
 		End Try
 	End Function
+
+	Public Function SendWorkMessage(ByRef InWorkMessage As WorkMessage) As String
+		Const SUB_NAME As String = "SendWorkMessage"
+		Dim strStepName As String = "", strRet As String = ""
+		Try
+			Dim oPigWebReq As PigWebReq = Nothing, strUrl As String = "", pjRes As PigJSon = Nothing
+			With InWorkMessage
+				strStepName = "检查消息类型"
+				Select Case .MsgType
+					Case WorkMessage.MsgTypeEnum.Text
+						strStepName = "检查消息内容"
+						If .Content = "" Then Throw New Exception("未指定内容")
+						If .Content.Length > 2048 Then Me.PrintDebugLog(SUB_NAME, strStepName, "内容超过2048，将截断")
+						If Me.IsAccessTokenReady = False Then
+							strStepName = "RefAccessToken"
+							Me.RefAccessToken(True)
+							If Me.LastErr <> "" Then Throw New Exception(Me.LastErr)
+						End If
+						strUrl = QYAPI_CGIBIN_URL & "/message/send?access_token=" & Me.AccessToken
+						strStepName = "mWebReqGetText"
+						strRet = Me.mWebReqPostText(oPigWebReq, pjRes, strUrl, .PostJSon)
+						If strRet <> "OK" Then Throw New Exception(strRet)
+						Dim strValue As String = ""
+						strValue = pjRes.GetStrValue("invaliduser")
+						If strValue <> "" Then .InvalidParty = strValue
+						strValue = pjRes.GetStrValue("invalidparty")
+						If strValue <> "" Then .InvalidParty = strValue
+						strValue = pjRes.GetStrValue("invalidtag")
+						If strValue <> "" Then .InvalidTag = strValue
+					Case Else
+						Throw New Exception("目前尚不支持" & .MsgType.ToString)
+				End Select
+			End With
+			Return "OK"
+		Catch ex As Exception
+			Return Me.GetSubErrInf(SUB_NAME, strStepName, ex)
+		End Try
+	End Function
+
 End Class
