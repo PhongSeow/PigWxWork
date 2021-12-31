@@ -4,7 +4,7 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: Basic lightweight Edition
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.1.1
+'* Version: 1.5.1
 '* Create Time: 31/8/2019
 '*1.0.2  1/10/2019   Add mGetSubErrInf 
 '*1.0.3  4/11/2019   Add LastErr
@@ -33,17 +33,24 @@
 '*1.0.26 23/7/2021   Modify mPrintDebugLog,mGetSubErrInf,FullSubName add AppVersion
 '*1.0.27 25/7/2021   Add mOpenDebug,OpenDebug, remove GetSubStepDebugInf, Modify mstrAppTitle
 '*1.1.1 31/8/2021    Modify MyClassName
+'*1.2 7/12/2021      Add MyPID, modify mGetSubErrInf,MyClassName,mGetSubErrInf, remove mstrKeyInf
+'*1.3 8/12/2021      Add StruSubLog
+'*1.5 17/12/2021     Modify StruSubLog
 '************************************
 Imports System.Runtime.InteropServices
 Public Class PigBaseMini
     Private mstrClsName As String
-    Private mstrClsVersion As String
+    Private ReadOnly mstrClsVersion As String
     Private mstrLastErr As String = ""
     Private mbolIsDebug As Boolean
     Private mbolIsHardDebug As Boolean
     Private mstrDebugFilePath As String
-    Private mstrKeyInf As String = ""
 
+    Friend Structure StruSubLog
+        Dim SubName As String
+        Dim StepName As String
+        Dim Ret As String
+    End Structure
 
     Public Sub New(Version As String)
         mstrClsName = Me.GetType.Name.ToString()
@@ -66,6 +73,27 @@ Public Class PigBaseMini
     Friend Sub ClearErr()
         mstrLastErr = ""
     End Sub
+
+    Private mlngMyPID As Long = 0
+    Friend ReadOnly Property fMyPID() As String
+        Get
+            Try
+                If mlngMyPID <= 0 Then
+#If NET5_0_OR_GREATER Then
+                    mlngMyPID = System.Environment.ProcessId
+#Else
+                    mlngMyPID = System.Diagnostics.Process.GetCurrentProcess.Id
+#End If
+                End If
+                Return mlngMyPID
+            Catch ex As Exception
+                Me.SetSubErrInf("fMyPID", ex)
+                Return 0
+            End Try
+        End Get
+    End Property
+
+
 
     Friend Overloads Sub SetDebug(DebugFilePath As String)
         mbolIsDebug = True
@@ -113,9 +141,8 @@ Public Class PigBaseMini
             If StepName <> "" Then
                 sbAny.Append("{" & StepName & "}")
             End If
-            sbAny.Append("]")
-            sbAny.Append(LogInf)
-            strLogInf = "[" & dtNow.ToString("yyyy-MM-dd HH:mm:ss.fff") & "][" & System.Diagnostics.Process.GetCurrentProcess.Id.ToString & "." & System.Threading.Thread.CurrentThread.ManagedThreadId.ToString & "]" & sbAny.ToString
+            sbAny.Append("]" & LogInf)
+            strLogInf = "[" & dtNow.ToString("yyyy-MM-dd HH:mm:ss.fff") & "][" & Me.fMyPID.ToString & "." & System.Threading.Thread.CurrentThread.ManagedThreadId.ToString & "]" & sbAny.ToString
             swAny.WriteLine(strLogInf)
             swAny.Close()
             sfAny.Close()
@@ -137,9 +164,10 @@ Public Class PigBaseMini
     Public Overloads ReadOnly Property MyClassName(IsIncAppTitle As Boolean) As String
         Get
             If IsIncAppTitle = True Then
-                MyClassName = System.Reflection.Assembly.GetExecutingAssembly().GetName.Name & "."
+                MyClassName = System.Reflection.Assembly.GetExecutingAssembly().GetName.Name & "." & mstrClsName
+            Else
+                MyClassName = mstrClsName
             End If
-            MyClassName = mstrClsName
         End Get
     End Property
 
@@ -205,17 +233,14 @@ Public Class PigBaseMini
             If StepName.Length > 0 Then
                 sbAny.Append("{" & StepName & "}")
             End If
-            sbAny.Append("]")
-            If mstrKeyInf.Length > 0 Then sbAny.Append("[Key:" & mstrKeyInf & "]")
-            sbAny.Append("[ErrInf:")
+            sbAny.Append("][ErrInf:")
             sbAny.Append(exIn.Message & "]")
             If IsStackTrace = True Then
-                Dim strExStackTrace As String = exIn.StackTrace
+                Dim strExStackTrace As String = exIn.StackTrace.Trim
                 With strExStackTrace
                     If .Length > 0 Then
-                        If .LastIndexOf(vbCrLf) >= 0 Then .Replace(vbCrLf, "")
-                        If .LastIndexOf(vbTab) >= 0 Then .Replace(vbTab, " ")
-                        .Trim()
+                        If .LastIndexOf(vbCrLf) >= 0 Then strExStackTrace = .Replace(vbCrLf, "")
+                        If .LastIndexOf(vbTab) >= 0 Then strExStackTrace = .Replace(vbTab, " ")
                     End If
                 End With
                 sbAny.Append("[Trace:")
@@ -248,27 +273,8 @@ Public Class PigBaseMini
         GetSubErrInf = Me.mGetSubErrInf(SubName, StepName, exIn, IsStackTrace)
     End Function
 
-    '''' <remarks>获取未出错时过程调试信息</remarks>
-    'Friend Function GetSubStepDebugInf(SubName As String, StepName As String, DebugInf As String) As String
-    '    Try
-    '        Dim sbAny As New System.Text.StringBuilder("")
-    '        sbAny.Append(Me.FullSubName(SubName))
-    '        If StepName.Length > 0 Then
-    '            sbAny.Append("(")
-    '            sbAny.Append(StepName)
-    '            sbAny.Append(")")
-    '        End If
-    '        If mstrKeyInf.Length > 0 Then sbAny.Append(";Key:" & mstrKeyInf)
-    '        sbAny.Append(";Debug:")
-    '        sbAny.Append(DebugInf)
-    '        Return sbAny.ToString
-    '        sbAny = Nothing
-    '    Catch ex As Exception
-    '        Return ex.Message.ToString
-    '    End Try
-    'End Function
 
-    Private mbolIsWindows As Boolean
+    Private ReadOnly mbolIsWindows As Boolean
     Friend ReadOnly Property IsWindows() As Boolean
         Get
             Return mbolIsWindows
@@ -278,7 +284,7 @@ Public Class PigBaseMini
     ''' <summary>
     ''' Cross platform line feed, automatically identifying windows and Linux
     ''' </summary>
-    Private mstrOsCrLf As String
+    Private ReadOnly mstrOsCrLf As String
     Friend ReadOnly Property OsCrLf() As String
         Get
             Return mstrOsCrLf
@@ -288,7 +294,7 @@ Public Class PigBaseMini
     ''' <summary>
     ''' Cross platform path separator, automatically identifying Windows and Linux
     ''' </summary>
-    Private mstrOsPathSep As String
+    Private ReadOnly mstrOsPathSep As String
     Friend ReadOnly Property OsPathSep() As String
         Get
             Return mstrOsPathSep
