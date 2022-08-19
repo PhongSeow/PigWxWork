@@ -26,8 +26,8 @@
 
 Imports System.Web
 Imports System.Web.Services
+Imports PigToolsLiteLib
 Imports PigToolsWinLib
-
 
 Public Class WorkApp
 	Inherits PigBaseMini

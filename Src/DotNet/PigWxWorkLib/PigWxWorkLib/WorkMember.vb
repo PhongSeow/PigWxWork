@@ -4,18 +4,20 @@
 '* License: Copyright (c) 2020 Seow Phong, For more details, see the MIT LICENSE file included with this distribution.
 '* Describe: 企业微信成员
 '* Home Url: https://www.seowphong.com or https://en.seowphong.com
-'* Version: 1.0.4
+'* Version: 1.1
 '* Create Time: 5/3/2021
 '* 1.0.2  6/3/2021   Add FillPropertiesByJSon
 '* 1.0.3  15/4/2021   Use PigToolsWinLib
 '* 1.0.4  15/7/2021   Add OpenID
+'* 1.1    19/8/2021   Imports PigToolsLiteLib
 '**********************************
 
+Imports PigToolsLiteLib
 Imports PigToolsWinLib
 
 Public Class WorkMember
 	Inherits PigBaseMini
-	Private Const CLS_VERSION As String = "1.0.4"
+	Private Const CLS_VERSION As String = "1.1.2"
 
 	Public Sub New()
 		MyBase.New(CLS_VERSION)
