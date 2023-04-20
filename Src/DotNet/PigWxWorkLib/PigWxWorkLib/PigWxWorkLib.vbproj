@@ -8,24 +8,24 @@
     <Company>Seow Phong Studio</Company>
     <Copyright>Copyright (c) 2021-2023 Seow Phong</Copyright>
     <PackageIcon>SeowPhongLogo.png</PackageIcon>
-    <PackageProjectUrl>https://en.seowphong.com/oss/PigWxWork/</PackageProjectUrl>
+    <PackageProjectUrl>https://en.seowphong.com</PackageProjectUrl>
     <RepositoryUrl>https://github.com/PhongSeow/PigWxWork/tree/master/Src/DotNet/PigWxWorkLib</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
     <PackageTags>PigWxWorkLib 企业微信 Work WeChat  WorkApp WorkMember 刷新access_token 获取企业微信API域名IP段 获取构造网页授权链接 获取访问用户身份 通讯录管理</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.6.108</Version>
-    <Description>这是一个接口简单，容易理解的企业微信开发工具应用。
-功能包括：
-刷新access_token
-获取企业微信API域名IP段
-获取构造网页授权链接
-获取访问用户身份
-处理OAuth2登录后从企业微信跳转回来并获取一个 WorkMember 对象
-通讯录管理-读取成员
-通讯录管理-读取部门
-消息发送-文本消息
+    <Version>1.6.110</Version>
+    <Description>This is a simple and easy to understand enterprise WeChat development tool application.
+Features include:
+Refresh access_ token
+Obtain the Enterprise WeChat API Domain Name IP Segment
+Obtain authorization link for constructing web pages
+Obtaining Access User Identity
+After processing OAuth2 login, jump back from enterprise WeChat and obtain a WorkMember object
+Address Book Management - Read Members
+Address Book Management - Reading Department
+Message Sending - Text Message
 </Description>
-    <PackageReleaseNotes>引用最新类库。</PackageReleaseNotes>
+    <PackageReleaseNotes>Update project information.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="PigToolsWinLib" Version="3.3.130" />
+    <PackageReference Include="PigToolsWinLib" Version="3.3.132" />
     <PackageReference Include="WxWorkCryptLib" Version="1.1.3" />
   </ItemGroup>
 
