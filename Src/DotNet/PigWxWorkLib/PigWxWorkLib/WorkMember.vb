@@ -16,8 +16,8 @@ Imports PigToolsLiteLib
 Imports PigToolsWinLib
 
 Public Class WorkMember
-	Inherits PigBaseMini
-	Private Const CLS_VERSION As String = "1.1.2"
+	Inherits PigBaseLocal
+	Private Const CLS_VERSION As String = "1.1.6"
 
 	Public Sub New()
 		MyBase.New(CLS_VERSION)

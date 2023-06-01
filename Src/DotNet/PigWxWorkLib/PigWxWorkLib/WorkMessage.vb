@@ -11,8 +11,8 @@
 Imports PigToolsWinLib
 
 Public Class WorkMessage
-	Inherits PigBaseMini
-	Private Const CLS_VERSION As String = "1.1.1"
+	Inherits PigBaseLocal
+	Private Const CLS_VERSION As String = "1.1.8"
 	Public Sub New(AgentId As String)
 		MyBase.New(CLS_VERSION)
 		Me.AgentId = AgentId

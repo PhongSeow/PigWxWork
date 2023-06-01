@@ -30,8 +30,8 @@ Imports PigToolsLiteLib
 Imports PigToolsWinLib
 
 Public Class WorkApp
-	Inherits PigBaseMini
-	Private Const CLS_VERSION As String = "1.3.2"
+	Inherits PigBaseLocal
+	Private Const CLS_VERSION As String = "1.3.8"
 	Private Const QYAPI_URL As String = "https://qyapi.weixin.qq.com"
 	Private Const QYAPI_CGIBIN_URL As String = QYAPI_URL & "/cgi-bin"
 	Private Const OEPN_WX_URL As String = "https://open.weixin.qq.com"
