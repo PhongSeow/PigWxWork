@@ -1,0 +1,14 @@
+企业ID
+ww18330c6627358859
+AgentId
+1000036
+Secret
+XZqojCxIHzZwmCEm6pSa4zJrmx0TOLxwYUeZmt_SnXs
+
+https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ww18330c6627358859&corpsecret=XZqojCxIHzZwmCEm6pSa4zJrmx0TOLxwYUeZmt_SnXs
+
+"{""errcode"":0,""errmsg"":""ok"",""access_token"":""ta_KKc1U0cOlLWkX-KlHd8Nw9J5-fMChJI4ILMykX7btfOYzwO0Mkx2XOrS1zLSFdiqSc3GIRYfaJcDLSt0SXsBiT7ufiZutqnsykfHmvINs7yaRKhO5nU68qyUw87donK9FrV7l9WO6OD9jyCPrQmC6d6fAeF3dW3J-nx2Pl14feUAI9vYqiXe0rgJPHxCppJWhEmvUJ41bAq2g2dBNvw"",""expires_in"":7200}"
+
+
+http%3a%2f%2fapi.3dept.com%2fcgi-bin%2fquery%3faction%3dget
+http%3a%2f%2fapi.3dept.com%2fcgi-bin%2fquery%3faction%3dget

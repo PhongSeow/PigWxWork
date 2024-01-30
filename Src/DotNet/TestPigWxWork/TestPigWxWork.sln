@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TestPigWxWork", "TestPigWxWork\TestPigWxWork.vbproj", "{A6B9BBFD-07AA-461A-B9F7-CD16B7077218}"
+EndProject
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "PigWxWorkLib", "..\PigWxWorkLib\PigWxWorkLib\PigWxWorkLib.vbproj", "{E10D47DB-98EE-4668-A155-3017039D45AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6B9BBFD-07AA-461A-B9F7-CD16B7077218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B9BBFD-07AA-461A-B9F7-CD16B7077218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B9BBFD-07AA-461A-B9F7-CD16B7077218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B9BBFD-07AA-461A-B9F7-CD16B7077218}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E10D47DB-98EE-4668-A155-3017039D45AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E10D47DB-98EE-4668-A155-3017039D45AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E10D47DB-98EE-4668-A155-3017039D45AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E10D47DB-98EE-4668-A155-3017039D45AA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69AD2F64-0CD7-44A5-B52F-3CAEDD191EC3}
+	EndGlobalSection
+EndGlobal
